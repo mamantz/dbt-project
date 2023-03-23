@@ -1,7 +1,7 @@
 WITH 
 
-shipping_info AS (
-    SELECT * FROM {{ ref('int__shipping_cost_per_customer') }}
+discount_rate AS (
+    SELECT * FROM {{ ref('int__discount_rate_per_customer') }}
 ),
 
 customer_info AS (
@@ -10,11 +10,11 @@ customer_info AS (
 
 final AS (
     SELECT 
-      c.*, 
-      t.cost
+      c.*,
+      (c.total_paid * t.item_discount) as item_total
     FROM customer_info c
-    JOIN shipping_info t
-    ON c.customer_id = t.id
+    JOIN discount_rate t
+    ON c.customer_id = t.customer_id
 )
 
 SELECT * FROM final

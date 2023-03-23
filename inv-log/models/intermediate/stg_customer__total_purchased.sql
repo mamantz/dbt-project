@@ -10,10 +10,16 @@ source2 as (
 
 transformed as (
   select
-    s2.customer_id, s2.customer_name, s1.count(item_id), s1.sum(price), s1.max(purchased_on)
-  from source1 s1
-  join source2 s2 on 
-  group by customer_id, customer_name
+    s2.id as customer_id, 
+    s2.name as customer_name, 
+    s1.num_items_purchased, 
+    s1.total_paid, 
+    count(s1.order_id) as num_of_invoices, 
+    max(s1.date_purchased) as most_recent_purchase
+  from customer.final_invoice s1
+  join customer.order_info oi on oi.order_id = s1.order_id
+  join customer.customer s2 on s2.id = oi.customer_id
+  group by s2.id, s2.name, s1.num_items_purchased, s1.total_paid
   order by customer_name asc
 )
 

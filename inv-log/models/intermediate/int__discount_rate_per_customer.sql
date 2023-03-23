@@ -10,13 +10,11 @@ customers as (
 
 transformed as (
   select
-    c.id, 
-    c.name, 
-    c.location, 
-    t.cost 
-  from customers c
-  join shipping_costs t 
-  on c.location = t.country
+    c.id as customer_id,
+	  si.item_discount,
+    si.shipping_discount
+  from customer.customer c
+  join customer.sub_info si on si.id = c.sub_tier
 )
 
 select * from transformed
