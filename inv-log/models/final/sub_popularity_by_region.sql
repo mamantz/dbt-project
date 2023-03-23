@@ -9,7 +9,7 @@ customer AS (
 ),
 
 final as (
-    SELECT c.location, s.name AS sub_name, COUNT(c.id) AS customer_count
+    SELECT c.location as region, s.name AS sub_name, COUNT(c.id) AS customer_count
     FROM customer c
     JOIN customer.sub_info s ON c.sub_tier = s.id
     GROUP BY c.location, s.name

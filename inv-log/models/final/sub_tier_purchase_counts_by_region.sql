@@ -7,7 +7,8 @@ customer AS (
 final as (
   SELECT 
     sub_tier, 
-    to_char(DATE_TRUNC('month', purchase_date), 'Month YYYY') AS month,  
+    location as region, 
+    to_char(DATE_TRUNC('month', purchase_date), 'Month YYYY') AS month, 
     COUNT(*) AS purchase_count
   FROM 
     customer.customer c
@@ -15,8 +16,10 @@ final as (
     customer.order_info oi ON oi.customer_id = c.id
   JOIN 
     customer.order_catalog fi ON fi.order_id = oi.order_id
-  GROUP BY sub_tier, month
-  ORDER BY sub_tier
+  GROUP BY sub_tier, month, region
+  ORDER BY sub_tier,region
 )
 
 select * from final
+
+--DATE_TRUNC('month', purchase_date)::date AS month
